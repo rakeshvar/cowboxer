@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/images" >
+        <file>images/icon.png</file>
+        <file>images/new.png</file>
+        <file>images/openImage.png</file>
+        <file>images/openText.png</file>
+        <file>images/openBox.png</file>
+        <file>images/imageNotLoaded.png</file>
+        <file>images/save.png</file>
+        <file>images/save-as.png</file>
+        <file>images/help.png</file>
+        <file>images/hexEditor.png</file>
+    </qresource>
+</RCC>
