@@ -17,5 +17,6 @@ HEADERS += mainwindow.h \
 
 RESOURCES = cowboxer.qrc
 
-QTPLUGIN += qtiff
-#LIBS += -L"E:/qt/qt462relsat/plugins/imageformats" -lqtiff
+#QTPLUGIN += qtiff
+#LIBS += -L"/usr/local/qt471rst/plugins/imageformats" -lqtiff
+LIBS += -L"C:/Qt/4.7.1/dsh/plugins/imageformats" -lqtiff

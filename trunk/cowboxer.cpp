@@ -2,7 +2,7 @@
 #include "cowboxer.h"
 #include <QDebug>
 
-#define DETAIL_VIEW 4                   // Magnification for current symbol Detailed View Rectangle
+#define DETAIL_VIEW 2                   // Magnification for current symbol Detailed View Rectangle
 #define TEXT_RECT_FRAC 3                // Size of text rectangle compared  to Detailed View Rectangle
 #define ENABLE_BIG_TEXT_RECT 1          // Show or hide text rectangle inside Detailed View Rectangle
 
@@ -120,6 +120,8 @@ bool cowBoxer::isModified()
 
 void cowBoxer::setImageFile(const QString &imageFileName)
 {
+    // Dummy page no. 0. TODO: Multi-page TIF support using
+    // QImageReader's imageCount and jumpToImage methods
     pixmap.load(imageFileName); // yeh! thas all :)
     imgmap.load(imageFileName);
     resize(pixmap.size());
@@ -165,7 +167,9 @@ bool cowBoxer::saveBoxFile(const QString &boxlistFileName)
             << x1 << ' '
             << pixmap.height() - y2 << ' '
             << x2 << ' '
-            << pixmap.height() - y1;
+            << pixmap.height() - y1 << ' '
+            << '0';                             // Dummy page no. 0. TODO: Multi-page TIF support using
+                                                // QImageReader's imageCount and jumpToImage methods
         if(i < boxlist.maxSize() - 1) // if there is no last element we should start next line
             out << '\n';
     }
