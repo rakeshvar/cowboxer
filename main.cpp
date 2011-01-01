@@ -2,7 +2,9 @@
 #include <QtCore/QtPlugin>
 #include "mainwindow.h"
 
+#ifdef WIN32
 Q_IMPORT_PLUGIN(qtiff)
+#endif
 
 int main(int argc, char *argv[])
 {
