@@ -15,25 +15,39 @@ contains(QT_VERSION, ^4\\.[0-4]\\..*) {
 TARGET = CowBoxer
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    mainwindow.cpp \
-    cowboxer.cpp \
-    boxlist.cpp \
-    cowscrollarea.cpp \
+DEPENDPATH += . \
+    resource \
+    src
 
-HEADERS += mainwindow.h \
-    cowboxer.h \
-    boxlist.h \
-    cowscrollarea.h \
+INCLUDEPATH += . \
+    src \
+    src/include
+    
+DESTDIR += .
+OBJECTS_DIR += temp
+MOC_DIR += temp
+UI_DIR += temp
+RCC_DIR += temp
 
-RESOURCES = cowboxer.qrc
+SOURCES += src/main.cpp \
+    src/mainwindow.cpp \
+    src/cowboxer.cpp \
+    src/boxlist.cpp \
+    src/cowscrollarea.cpp
+
+HEADERS += src/include/mainwindow.h \
+    src/include/cowboxer.h \
+    src/include/boxlist.h \
+    src/include/cowscrollarea.h
+
+RESOURCES = resource/cowboxer.qrc
 
 contains(CONFIG, static): {
 
        ######### on main.cpp use defined ########
 
        exists($$[QT_INSTALL_PLUGINS]/imageformats/libqtiff.$$LIB_EXTENSION) {
-            QTPLUGIN += qtiff   
-            DEFINES += _USE_qtiff            
+            QTPLUGIN += qtiff
+            DEFINES += _USE_qtiff
         }
 }
