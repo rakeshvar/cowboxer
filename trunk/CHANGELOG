@@ -1,0 +1,5 @@
+cowboxer 1.00 / 2010-07-16:
+* initial version based on owlboxer
+* improved string inputs
+* added feature inserting/deleting ONLY a box/string so that the 
+  relative assignment of boxes to strings is shifted up or down.
