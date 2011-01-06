@@ -1,16 +1,16 @@
 [Desktop Entry]
-Categories=Qt;System;Editor;
-Comment=Qt4 editor for tesseract-ocr box traning file.
-Comment[en]=Qt4 editor for tesseract-ocr box traning file.
-Comment[sk]=Qt4 editor pre box súbory pre trénovanie programu tesseract-ocr.
+Encoding=UTF-8
+Name=CowBoxer
 GenericName=Qt4 utility for edditing tesseract-ocr box traning files.
 GenericName[en]=Qt4 utility for edditing tesseract-ocr box traning files.
 GenericName[sk]=Qt4 nástroj na editovanie box súborov pre trénovanie programu tesseract-ocr.
-Exec=Cowboxer
-Icon=cowboxer
-Name=Cowboxer
-Path=
-StartupNotify=true
+Comment=Qt4 editor for tesseract-ocr box traning file.
+Comment[en]=Qt4 editor for tesseract-ocr box traning file.
+Comment[sk]=Qt4 editor pre box súbory pre trénovanie programu tesseract-ocr.
+Exec=cowboxer %F
 Terminal=false
 Type=Application
-MimeType=application/x-ms-dos-executable;
+Icon=cowboxer
+Categories=Development;Qt;System;Editor;OCR;
+StartupNotify=true
+MimeType=application/x-ms-dos-executable;text/plain;text/x-box;
