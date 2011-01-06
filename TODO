@@ -1,2 +1,6 @@
 Instalation (make install)
 Translation (lrelease CowBoxer.pro)
+Recent file menu (http://www.java2s.com/Code/Cpp/Qt/Recentfilemenu.htm)
+Open file from command line (cowboxer file.box)
+Remember last open directory
+

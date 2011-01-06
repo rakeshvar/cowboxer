@@ -50,7 +50,8 @@ void MainWindow::init()
   scrollArea->setCowboxer(cowboxer);
 
   setCentralWidget(scrollArea);
-  setWindowIcon(QIcon(":/images/images/icon.png"));
+  //setWindowIcon(QIcon(":/images/images/icon.png"));
+  setWindowIcon(QIcon(":/images/images/cowboxer.svg"));
 
   setActions();
   readSettings();   //set the window to the last opened position
@@ -100,6 +101,9 @@ void MainWindow::setActions()
   aboutAct->setStatusTip(tr("How to use CowBoxer"));
   connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
+  aboutQtAct = new QAction(tr("About &Qt"), this);
+  connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+
   // action exit
   exitAct = new QAction(tr("E&xit"), this);
   exitAct->setStatusTip(tr("Shut down the program"));
@@ -118,6 +122,7 @@ void MainWindow::setActions()
   // add actions to the about menu
   helpMenu = menuBar()->addMenu(tr("&Help"));
   helpMenu->addAction(aboutAct);
+  helpMenu->addAction(aboutQtAct);
 
   // add actions to the toolbars
   fileToolBar = new QToolBar(tr("File"));
@@ -172,7 +177,7 @@ void MainWindow::openImage()
 {
   QString imageFileName = QFileDialog::getOpenFileName(NULL, tr("Open image file"),
                                                        tr(""),
-                                                       tr("Image files (*.tif *.tiff);;All files (*.*)"));
+                                                       tr("Tiff files (*.tif *.tiff);;Image files (*.bmp *.png *.jpeg *.jpg *.tif *.tiff);;All files (*.*)"));
 
   if (!imageFileName.isEmpty())     // if we have file
     {
@@ -249,10 +254,10 @@ void MainWindow::about()
                        "<p><b>Any key</b> - Input string for the current box</p>"
                        "<h2>Project page</h2>"
                        "<p><a href=\"http://code.google.com/p/cowboxer/\">CowBoxer homepage at Google Code</a></p>"
-                       "<p>CowBoxer <a href=\"http://www.gnu.org/licenses/gpl.html\">is available under the GPL</a></p>"
+                       "<p>CowBoxer is available under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GNU General Public License v3</a></p>"
                        "<h2>Author(s)</h2>"
-                       "<p><b>Aleksey Sytchev</b> - 194145@gmail.com</p>"
-                       "<p><b>Rakeshvara Rao</b></p>"));
+                       "<p><b>Aleksey Sytchev</b> - 194145 (at) gmail.com</p>"
+                       "<p><b>Rakeshvara Rao</b> - rakeshvar (at) gmail.com</p>"));
 }
 
 void MainWindow::readSettings()

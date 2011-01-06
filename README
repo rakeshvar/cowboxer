@@ -28,9 +28,9 @@ scripts a single image is composed of many characters
 It has additional features like inserting/deleting ONLY a box/string so
 that the relative assignment of boxes to strings is shifted up or down.
 
-5. How to use TextRoom
+5. How to use Cowboxer
 ----------------------
--Keyboard shortcuts:
+Keyboard shortcuts:
 
 Arrow key ------------------ Move box
 Arrow key + Shift ---------- Fast moving
