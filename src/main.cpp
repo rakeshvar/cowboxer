@@ -27,9 +27,14 @@ Q_IMPORT_PLUGIN(qtiff)
 
 int main(int argc, char *argv[])
 {
-  QApplication a(argc, argv);
+  QApplication app(argc, argv);
+
   MainWindow w;
 
+  //try to open first parameter input file
+  if (argc == 2)
+        w.openBox(argv[1]);
+
   w.show();
-  return a.exec();
+  return app.exec();
 }
