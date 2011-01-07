@@ -138,11 +138,15 @@ void MainWindow::setActions()
           scrollArea, SLOT(ensurePositionVisibility(int, int)));
 }
 
-void MainWindow::openBox()
+void MainWindow::openBox(const QString &path)
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Tesseract box file"),
+  QString fileName;
+  if (path.isNull())
+       fileName = QFileDialog::getOpenFileName(this, tr("Open Tesseract box file"),
                                                   tr(""),
                                                   tr("Tesseract box files (*.box);;All files (*.*)"));
+  else
+         fileName = path;
 
   if (!fileName.isEmpty())
     {
