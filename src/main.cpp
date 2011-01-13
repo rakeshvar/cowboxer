@@ -30,7 +30,8 @@ Q_IMPORT_PLUGIN(qtiff)
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-
+  app.setOrganizationName("Aleksey Sytchev");
+  app.setApplicationName("CowBoxer");
   MainWindow w;
 
   //try to open first parameter input file
