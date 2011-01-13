@@ -44,6 +44,9 @@ RESOURCES = resource/cowboxer.qrc
 
 win32: {
     RC_FILE = resource/win.rc
+    DIR_SEPARATOR = \
+    CONFIG += warn_on qt console
+    #CONFIG += debug
 }
 
 unix:!macx { # installation on Unix-ish platforms

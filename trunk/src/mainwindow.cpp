@@ -17,7 +17,9 @@
 **
 ***********************************************************************/
 
+#include <QDir>
 #include <QtGui>
+#include <QFileInfo>
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -55,6 +57,7 @@ void MainWindow::init()
 
   setActions();
   readSettings();   //set the window to the last opened position
+  (void)statusBar();
 }
 
 void MainWindow::setActions()
@@ -113,13 +116,15 @@ void MainWindow::setActions()
   fileMenu = menuBar()->addMenu(tr("&File"));
   fileMenu->addAction(newAct);
   fileMenu->addAction(openBoxAct);
+  fileMenu->addAction(openImageAct);
+  fileMenu->addSeparator();
   fileMenu->addAction(saveBoxAct);
   fileMenu->addAction(saveAsBoxAct);
-  fileMenu->addAction(openImageAct);
   fileMenu->addSeparator();
   fileMenu->addAction(exitAct);
 
   // add actions to the about menu
+  menuBar()->addSeparator();
   helpMenu = menuBar()->addMenu(tr("&Help"));
   helpMenu->addAction(aboutAct);
   helpMenu->addAction(aboutQtAct);
@@ -141,12 +146,18 @@ void MainWindow::setActions()
 void MainWindow::openBox(const QString &path)
 {
   QString fileName;
+  QString last_path;
+  QSettings settings;
+
   if (path.isNull())
-       fileName = QFileDialog::getOpenFileName(this, tr("Open Tesseract box file"),
-                                                  tr(""),
-                                                  tr("Tesseract box files (*.box);;All files (*.*)"));
+    {
+      last_path = settings.value("last_path").toString();   // try to get path from settings
+      fileName = QFileDialog::getOpenFileName(this, tr("Open Tesseract box file"),
+                                              last_path,
+                                              tr("Tesseract box files (*.box);;All files (*.*)"));
+    }
   else
-         fileName = path;
+    fileName = path;
 
   if (!fileName.isEmpty())
     {
@@ -177,11 +188,19 @@ void MainWindow::openBox(const QString &path)
     }
 }
 
-void MainWindow::openImage()
+void MainWindow::openImage(const QString &path)
 {
+  QSettings settings;
+  QString last_path;
+
+  if (path.isNull())
+    last_path = settings.value("last_path").toString();    // try to get path from settings
+  else
+    last_path = path;
+
   QString imageFileName = QFileDialog::getOpenFileName(NULL, tr("Open image file"),
-                                                       tr(""),
-                                                       tr("Tiff files (*.tif *.tiff);;Image files (*.bmp *.png *.jpeg *.jpg *.tif *.tiff);;All files (*.*)"));
+                                                       last_path,
+                                                       tr("Image files (*.bmp *.png *.jpeg *.jpg *.tif *.tiff);;Tiff files (*.tif *.tiff);;All files (*.*)"));
 
   if (!imageFileName.isEmpty())     // if we have file
     {
@@ -302,6 +321,7 @@ void MainWindow::loadFile(const QString &fileName)
 {
   QFile file(fileName);
 
+  qDebug() << "MainWindow::loadFile invoked...";
   if (!file.open(QFile::ReadOnly | QFile::Text))
     {
       QMessageBox::warning(this, tr("CowBoxer"),
@@ -331,7 +351,10 @@ void MainWindow::loadFile(const QString &fileName)
           cowboxer->setImageFile(imageFileName);   // thank's God. Take it and run out of this terrible function
         }
       else
-        openImage();            // What!? Does image file not loaded yet? Get me its name, and i'll get it!
+        {
+          //QString filePath = QFileInfo(imageFileName).absolutePath();
+          openImage(QFileInfo(imageFileName).absolutePath());          // What!? Does image file not loaded yet? Get me its name, and i'll get it!
+        }
     }
 
   QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -347,6 +370,10 @@ void MainWindow::loadFile(const QString &fileName)
   isUntitled = false;
   setCurrentFile(fileName);
   statusBar()->showMessage(tr("File loaded"), 2000);
+
+  QSettings settings;
+  QString filePath = QFileInfo(fileName).absolutePath();
+  settings.setValue("last_path", filePath); // save path of open box file
 }
 
 bool MainWindow::saveFile(const QString &fileName)
@@ -406,12 +433,12 @@ MainWindow *MainWindow::findMainWindow(const QString &fileName)
 {
   QString canonicalFilePath = QFileInfo(fileName).canonicalFilePath();
 
-  foreach(QWidget * widget, qApp->topLevelWidgets())
-  {
-    MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
+  foreach (QWidget * widget, qApp->topLevelWidgets())
+    {
+      MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
 
-    if (mainWin && mainWin->curFile == canonicalFilePath)
-      return mainWin;
-  }
+      if (mainWin && mainWin->curFile == canonicalFilePath)
+        return mainWin;
+    }
   return 0;
 }

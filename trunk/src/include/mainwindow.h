@@ -69,7 +69,7 @@ private:
 
 private slots:
     void newFile();
-    void openImage();
+    void openImage(const QString &path = QString());
     bool save();
     bool saveAs();
     void about();
