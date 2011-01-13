@@ -21,7 +21,9 @@
 #include <QtCore/QtPlugin>
 #include "mainwindow.h"
 
-#ifdef WIN32
+
+#if defined(STATIC_LINK)
+#include <QtPlugin>
 Q_IMPORT_PLUGIN(qtiff)
 #endif
 
