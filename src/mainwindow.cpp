@@ -109,9 +109,10 @@ void MainWindow::setActions()
 
   // action exit
   exitAct = new QAction(tr("E&xit"), this);
-  exitAct->setStatusTip(tr("Shut down the program"));
+  exitAct->setShortcuts(QKeySequence::Quit);
+  exitAct->setStatusTip(tr("Exit the application"));
   connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
-
+     
   // add actions to the file menu
   fileMenu = menuBar()->addMenu(tr("&File"));
   fileMenu->addAction(newAct);
@@ -321,7 +322,6 @@ void MainWindow::loadFile(const QString &fileName)
 {
   QFile file(fileName);
 
-  qDebug() << "MainWindow::loadFile invoked...";
   if (!file.open(QFile::ReadOnly | QFile::Text))
     {
       QMessageBox::warning(this, tr("CowBoxer"),
@@ -330,32 +330,38 @@ void MainWindow::loadFile(const QString &fileName)
                            .arg(file.errorString()));
       return;
     }
-  QString imageFileName = file.fileName();   // remember this path to acces to the image file
   file.close();   // [I don't need problems with you. Get off! You are useless now. ] I'll call you later, maybe. Bye.
 
+  QString imageFileName;
+  QString box_file = file.fileName();   // remember this path to acces to the image file
+  QString image_base = box_file.replace(box_file.lastIndexOf(tr(".box")), 4, "");   // remove file extension
 
-  // try to load .tif file with the same path
-  imageFileName.replace(imageFileName.lastIndexOf(tr(".box")), 4, ".tif");   // change the file extension
-  QFileInfo imageFileInfo(imageFileName);
-  if (imageFileInfo.exists())
+  qDebug() << "*****____ image_base:" << image_base;
+  QStringList image_files;
+  image_files.append(image_base + ".tif");  // we prefare tif/tiff
+  image_files.append(image_base + ".tiff");
+  image_files.append(image_base + ".png");
+  image_files.append(image_base + ".bmp");
+  image_files.append(image_base + ".jpg");  // very bad idea to use jpeg for training but it can be useful
+  image_files.append(image_base + ".jpeg");
+  foreach (const QString& image_file, image_files) {
+    qDebug() << "*****____ testing file:" << image_file;      
+    if (QFile::exists(image_file)) {
+      imageFileName = image_file;
+      break;
+      }
+  }
+  
+  qDebug() << "*****____ imageFileName:" << imageFileName;
+  if (imageFileName.isEmpty())
     {
-      cowboxer->setImageFile(imageFileName);   // we have got it! load and run out of function
+    openImage(QFileInfo(box_file).absolutePath()); // Does image file is not found yet? Get me its name, and i'll get it!
     }
   else
     {
-      // oh so bad! maybe our file have .tiff extension.
-      imageFileName.replace(imageFileName.lastIndexOf(tr(".tif")), 4, ".tiff");   // change the file extension
-      imageFileInfo.setFile(imageFileName);
-      if (imageFileInfo.exists())    //
-        {
-          cowboxer->setImageFile(imageFileName);   // thank's God. Take it and run out of this terrible function
-        }
-      else
-        {
-          //QString filePath = QFileInfo(imageFileName).absolutePath();
-          openImage(QFileInfo(imageFileName).absolutePath());          // What!? Does image file not loaded yet? Get me its name, and i'll get it!
-        }
-    }
+      qDebug() << "*****____ Opening file:" << imageFileName;
+      cowboxer->setImageFile(imageFileName);   // we have got it! load and run out of function
+    }  
 
   QApplication::setOverrideCursor(Qt::WaitCursor);
   bool loadedSuccessful = cowboxer->loadBoxFile(fileName);
@@ -371,9 +377,10 @@ void MainWindow::loadFile(const QString &fileName)
   setCurrentFile(fileName);
   statusBar()->showMessage(tr("File loaded"), 2000);
 
+  // save path of open box file
   QSettings settings;
   QString filePath = QFileInfo(fileName).absolutePath();
-  settings.setValue("last_path", filePath); // save path of open box file
+  settings.setValue("last_path", filePath);
 }
 
 bool MainWindow::saveFile(const QString &fileName)

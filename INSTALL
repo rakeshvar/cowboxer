@@ -1,3 +1,4 @@
-qmake CowBoxer.pro
+qmake
 make
-Cowboxer
+make install
+cowboxer
