@@ -97,6 +97,20 @@ void MainWindow::setActions()
   openImageAct->setStatusTip(tr("Open an image file"));
   connect(openImageAct, SIGNAL(triggered()), this, SLOT(openImage()));
 
+  for (int i = 0; i < MaxRecentFiles; ++i)
+    {
+      recentFileActs[i] = new QAction(this);
+      recentFileActs[i]->setVisible(false);
+      connect(recentFileActs[i], SIGNAL(triggered()),
+              this, SLOT(openRecentFile()));
+    }
+
+  // action exit
+  exitAct = new QAction(tr("E&xit"), this);
+  exitAct->setShortcuts(QKeySequence::Quit);
+  exitAct->setStatusTip(tr("Exit the application"));
+  connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+
   // about act
   aboutAct = new QAction(tr("&About"), this);
   aboutAct->setIcon(QIcon(":/images/images/help.png"));
@@ -107,25 +121,24 @@ void MainWindow::setActions()
   aboutQtAct = new QAction(tr("About &Qt"), this);
   connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-  // action exit
-  exitAct = new QAction(tr("E&xit"), this);
-  exitAct->setShortcuts(QKeySequence::Quit);
-  exitAct->setStatusTip(tr("Exit the application"));
-  connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
-     
   // add actions to the file menu
   fileMenu = menuBar()->addMenu(tr("&File"));
   fileMenu->addAction(newAct);
   fileMenu->addAction(openBoxAct);
   fileMenu->addAction(openImageAct);
+  separatorAct = fileMenu->addSeparator();
+  for (int i = 0; i < MaxRecentFiles; ++i)
+    fileMenu->addAction(recentFileActs[i]);
   fileMenu->addSeparator();
   fileMenu->addAction(saveBoxAct);
   fileMenu->addAction(saveAsBoxAct);
   fileMenu->addSeparator();
   fileMenu->addAction(exitAct);
+  updateRecentFileActions();
+
+  menuBar()->addSeparator();
 
   // add actions to the about menu
-  menuBar()->addSeparator();
   helpMenu = menuBar()->addMenu(tr("&Help"));
   helpMenu->addAction(aboutAct);
   helpMenu->addAction(aboutQtAct);
@@ -207,6 +220,14 @@ void MainWindow::openImage(const QString &path)
     {
       cowboxer->setImageFile(imageFileName);
     }
+}
+
+void MainWindow::openRecentFile()
+{
+  QAction *action = qobject_cast<QAction *>(sender());
+
+  if (action)
+    loadFile(action->data().toString());
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -344,24 +365,26 @@ void MainWindow::loadFile(const QString &fileName)
   image_files.append(image_base + ".bmp");
   image_files.append(image_base + ".jpg");  // very bad idea to use jpeg for training but it can be useful
   image_files.append(image_base + ".jpeg");
-  foreach (const QString& image_file, image_files) {
-    qDebug() << "*****____ testing file:" << image_file;      
-    if (QFile::exists(image_file)) {
-      imageFileName = image_file;
-      break;
-      }
-  }
-  
+  foreach (const QString& image_file, image_files)
+    {
+      qDebug() << "*****____ testing file:" << image_file;
+      if (QFile::exists(image_file))
+        {
+          imageFileName = image_file;
+          break;
+        }
+    }
+
   qDebug() << "*****____ imageFileName:" << imageFileName;
   if (imageFileName.isEmpty())
     {
-    openImage(QFileInfo(box_file).absolutePath()); // Does image file is not found yet? Get me its name, and i'll get it!
+      openImage(QFileInfo(box_file).absolutePath()); // Does image file is not found yet? Get me its name, and i'll get it!
     }
   else
     {
       qDebug() << "*****____ Opening file:" << imageFileName;
       cowboxer->setImageFile(imageFileName);   // we have got it! load and run out of function
-    }  
+    }
 
   QApplication::setOverrideCursor(Qt::WaitCursor);
   bool loadedSuccessful = cowboxer->loadBoxFile(fileName);
@@ -415,12 +438,35 @@ bool MainWindow::saveFile(const QString &fileName)
 
 void MainWindow::setCurrentFile(const QString &fileName)
 {
-  static int sequenceNumber = 1;
+  if (!fileName.isEmpty())
+    {
+      curFile = fileName;
+      setWindowFilePath(curFile);
+
+      QSettings settings;
+      QStringList files = settings.value("recentFileList").toStringList();
+      files.removeAll(fileName);
+      files.prepend(fileName);
+      while (files.size() > MaxRecentFiles)
+        files.removeLast();
+
+      settings.setValue("recentFileList", files);
+
+      foreach (QWidget *widget, QApplication::topLevelWidgets())
+        {
+          MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
+          if (mainWin)
+            mainWin->updateRecentFileActions();
+        }
+    }
+
+  //static int sequenceNumber = 1;
 
   isUntitled = fileName.isEmpty();
   if (isUntitled)
     {
-      curFile = tr("box%1.box").arg(sequenceNumber++);
+      //curFile = tr("box%1.box").arg(sequenceNumber++);
+      curFile = tr("Untitled");
     }
   else
     {
@@ -429,6 +475,26 @@ void MainWindow::setCurrentFile(const QString &fileName)
 
   setWindowTitle(tr("%1 - %2").arg(strippedName(curFile))
                  .arg(tr("CowBoxer")));
+}
+
+void MainWindow::updateRecentFileActions()
+{
+  QSettings settings;
+  QStringList files = settings.value("recentFileList").toStringList();
+
+  int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);
+
+  for (int i = 0; i < numRecentFiles; ++i)
+    {
+      QString text = tr("&%1 %2").arg(i + 1).arg(strippedName(files[i]));
+      recentFileActs[i]->setText(text);
+      recentFileActs[i]->setData(files[i]);
+      recentFileActs[i]->setVisible(true);
+    }
+  for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+    recentFileActs[j]->setVisible(false);
+
+  separatorAct->setVisible(numRecentFiles > 0);
 }
 
 QString MainWindow::strippedName(const QString &fullFileName)
