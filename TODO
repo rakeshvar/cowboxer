@@ -1,5 +1,3 @@
 Instalation (make install)
-Translation (lrelease CowBoxer.pro)
+Translation (lrelease CowBoxer.pro) - Dynamic Language Switching http://www.civilnet.cn/book/embedded/gui/qt4/ch17lev1sec3.html
 Recent file menu (http://www.java2s.com/Code/Cpp/Qt/Recentfilemenu.htm)
-Open file from command line (cowboxer file.box)
-Windows things -> win32 directory (qt.conf conflict on linux)

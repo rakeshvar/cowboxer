@@ -19,7 +19,7 @@
 
 #include <QtGui>
 #include "cowboxer.h"
-#include <QDebug>
+//#include <QDebug>
 
 #define DETAIL_VIEW 2                   // Magnification for current symbol Detailed View Rectangle
 #define TEXT_RECT_FRAC 3                // Size of text rectangle compared  to Detailed View Rectangle
