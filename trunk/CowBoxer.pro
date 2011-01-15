@@ -46,6 +46,7 @@ win32: {
     RC_FILE = resource/win.rc
     DESTDIR = ./win32
     DIR_SEPARATOR = \
+    #CONFIG   += console
 }
 
 unix:!macx { # installation on Unix-ish platforms

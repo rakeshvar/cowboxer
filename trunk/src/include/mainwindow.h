@@ -20,12 +20,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui/QMainWindow>
-#include <QMessageBox>
+#include <QList>
 #include <QToolBar>
+#include <QMainWindow>
 
 #include "cowboxer.h"
 #include "cowscrollarea.h"
+
+//QT_BEGIN_NAMESPACE
+//class QAction;
+//class QMenu;
+//QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
@@ -43,18 +48,23 @@ public slots:
 private:
     void init();
     void setActions();
-    cowBoxer* cowboxer;
-    QAction* newAct;
-    QAction* openBoxAct;
-    QAction* saveBoxAct;
-    QAction* saveAsBoxAct;
-    QAction* openImageAct;
-    QAction* aboutAct;
-    QAction* aboutQtAct;
-    QAction* exitAct;
-    QMenu* fileMenu;
-    QMenu* helpMenu;
-    QToolBar* fileToolBar;
+    cowBoxer *cowboxer;
+    QAction *newAct;
+    QAction *openBoxAct;
+    QAction *saveBoxAct;
+    QAction *saveAsBoxAct;
+    QAction *openImageAct;
+    QAction *exitAct;
+    QAction *aboutAct;
+    QAction *aboutQtAct;
+    QAction *separatorAct;
+    QMenu *fileMenu;
+    QMenu *helpMenu;
+    QToolBar *fileToolBar;
+
+    enum { MaxRecentFiles = 5 };
+    QAction *recentFileActs[MaxRecentFiles];
+
     void closeEvent(QCloseEvent *event);
     void readSettings();
     void writeSettings();
@@ -62,6 +72,7 @@ private:
     void loadFile(const QString &fileName);
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
+    void updateRecentFileActions();
     QString strippedName(const QString &fullFileName);
     MainWindow* findMainWindow(const QString &fileName);
     QString curFile;
@@ -72,6 +83,7 @@ private slots:
     void openImage(const QString &path = QString());
     bool save();
     bool saveAs();
+    void openRecentFile();
     void about();
 };
 

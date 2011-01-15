@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   app.setApplicationName("CowBoxer");
   MainWindow w;
 
-  //try to open first parameter input file
+  //try to open first parameter as input file
   if (argc == 2)
         w.openBox(argv[1]);
 
