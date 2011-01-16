@@ -1,4 +1,5 @@
 qmake
+lupdate CowBoxer.pro
 make
 make install
 cowboxer

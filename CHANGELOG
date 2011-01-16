@@ -1,7 +1,8 @@
 CowBoxer 1.01
 * support for tesseract 3.00 box file
-* remember last open directory
+* remember last open directory, recent files
 * support for other image formats (png, bmp, jpg)
+* translation
 * documentation improvement
 * linux instalation
 

@@ -7,10 +7,12 @@ GenericName[sk]=Qt4 nástroj na editovanie box súborov pre trénovanie programu
 Comment=Qt4 editor for tesseract-ocr box traning file.
 Comment[en]=Qt4 editor for tesseract-ocr box traning file.
 Comment[sk]=Qt4 editor pre box súbory pre trénovanie programu tesseract-ocr.
-Exec=cowboxer %F
+Exec=cowboxer %f
 Terminal=false
 Type=Application
 Icon=cowboxer
 Categories=Development;Qt;System;Editor;OCR;
 StartupNotify=true
 MimeType=application/x-ms-dos-executable;text/plain;text/x-box;
+X-KDE-StartupNotify=false
+#http://standards.freedesktop.org/desktop-entry-spec/latest/index.html
