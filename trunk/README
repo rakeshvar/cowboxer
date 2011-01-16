@@ -21,7 +21,7 @@ CowBoxer.pro and than to run:
 lupdate CowBoxer.pro
 It will create translation file in 'translations' sub-directory. This 
 file need to be translated in program linguist.
-
+(see: http://developer.qt.nokia.com/wiki/How_to_create_a_multi_language_application#b5b418fdd5b2983855778a589c989120)
 
 4. Installation
 ---------------

@@ -44,11 +44,25 @@ RESOURCES = resource/cowboxer.qrc
 
 TRANSLATIONS += translations/cowboxer_sk.ts
 
+updateqm.input = TRANSLATIONS
+updateqm.output = translations/${QMAKE_FILE_BASE}.qm
+updateqm.commands = $$QMAKE_LRELEASE \
+    -silent \
+    ${QMAKE_FILE_IN} \
+    -qm \
+    translations/${QMAKE_FILE_BASE}.qm
+updateqm.CONFIG += no_link
+
 win32: {
     RC_FILE = resource/win.rc
     DESTDIR = ./win32
     DIR_SEPARATOR = \
-    #CONFIG   += console
+    CONFIG   += console
+    localize.depends = translations/*.qm
+    localize.path = ./win32/translations/
+    localize.files = translations/*.qm
+    localize.commands = lrelease translations/*ts
+    INSTALLS = localize
 }
 
 unix:!macx { # installation on Unix-ish platforms

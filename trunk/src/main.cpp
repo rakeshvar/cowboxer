@@ -24,7 +24,7 @@
 #include <QtCore/QtPlugin>
 #include <QtGui/QApplication>
 #include "mainwindow.h"
-
+#include <QtGui>
 
 #if defined(STATIC_LINK)
 #include <QtPlugin>
@@ -42,10 +42,13 @@ int main(int argc, char *argv[])
   QString appdir = QCoreApplication::applicationDirPath();
   QStringList paths;
   paths.append(appdir + "/translations/");
+  paths.append(appdir + "/../translations/");
   paths.append(appdir + "/../share/" + QCoreApplication::applicationName().toLower() + "/translations/");
   paths.append("/usr/share/cowboxer/translations/");
   paths.append(appdir + "/../resource/translations");
+  qDebug() << "*****____ appdir:" << appdir;
   foreach (const QString& path, paths) {
+    qDebug() << "*****____ does it exists??? " << path;
     if (QFile::exists(path)) {
       m_path = path;
       break;
@@ -54,7 +57,9 @@ int main(int argc, char *argv[])
 
   // load translation
   QString locale = QLocale::system().name();
-  QTranslator translator; 
+  locale.truncate(locale.lastIndexOf('_'));
+  QTranslator translator;
+  qDebug() << "*****____ locale:" << locale;
   translator.load("cowboxer_" + locale, m_path);
   app.installTranslator(&translator);
 
