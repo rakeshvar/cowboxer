@@ -17,8 +17,12 @@
 **
 ***********************************************************************/
 
-#include <QtGui/QApplication>
+#include <QFile>
+#include <QLocale>
+#include <QTranslator>
+#include <QApplication>
 #include <QtCore/QtPlugin>
+#include <QtGui/QApplication>
 #include "mainwindow.h"
 
 
@@ -32,6 +36,28 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
   app.setOrganizationName("Aleksey Sytchev");
   app.setApplicationName("CowBoxer");
+  
+  //check if translation directory exists
+  QString m_path;
+  QString appdir = QCoreApplication::applicationDirPath();
+  QStringList paths;
+  paths.append(appdir + "/translations/");
+  paths.append(appdir + "/../share/" + QCoreApplication::applicationName().toLower() + "/translations/");
+  paths.append("/usr/share/cowboxer/translations/");
+  paths.append(appdir + "/../resource/translations");
+  foreach (const QString& path, paths) {
+    if (QFile::exists(path)) {
+      m_path = path;
+      break;
+    }
+  }
+
+  // load translation
+  QString locale = QLocale::system().name();
+  QTranslator translator; 
+  translator.load("cowboxer_" + locale, m_path);
+  app.installTranslator(&translator);
+
   MainWindow w;
 
   //try to open first parameter as input file

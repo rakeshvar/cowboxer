@@ -14,13 +14,25 @@ It is an improvement and customization of the existing owlboxer.
  * Qt >= 4.5.1 
 
 
-3. Installation
+3. Translation 
 ---------------
-qmake CowBoxer.pro
+If you want to translate CowBoxer to new language you need to adjust
+CowBoxer.pro and than to run:
+lupdate CowBoxer.pro
+It will create translation file in 'translations' sub-directory. This 
+file need to be translated in program linguist.
+
+
+4. Installation
+---------------
+qmake
+lupdate CowBoxer.pro
 make
+make install
+CowBoxer
 
 
-4. Features
+5. Features
 -----------
 Cowboxer can handle string inputs to the 'character'. In many complex
 scripts a single image is composed of many characters
@@ -28,7 +40,8 @@ scripts a single image is composed of many characters
 It has additional features like inserting/deleting ONLY a box/string so
 that the relative assignment of boxes to strings is shifted up or down.
 
-5. How to use Cowboxer
+
+6. How to use Cowboxer
 ----------------------
 Keyboard shortcuts:
 
