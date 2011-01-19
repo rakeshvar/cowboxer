@@ -3,3 +3,14 @@ lupdate CowBoxer.pro
 make
 make install
 cowboxer
+
+If you want to build static linked cowboxer on Windows first you must 
+recompile QT4 for static linking. See details on:
+http://www.formortals.com/build-qt-static-small-microsoft-intel-gcc-compiler/
+
+WARNING: translation is not part of static linked application.
+
+If you are satisfied with dynamic linked QT4 (libraries are present in 
+win32 folder), than you need to comment/remove line:
+    CONFIG += static
+in win32 section of CowBoxer.pro
