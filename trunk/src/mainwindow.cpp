@@ -1,4 +1,4 @@
-/***********************************************************************
+﻿/***********************************************************************
 ** Copyright (C) 2010, 20011 Rakesh Achanta <rakeshvar at gmail.com>
 ** Copyright (C) 2010 Aleksey Sytchev <194145 at gmail.com>
 **
@@ -62,11 +62,11 @@ void MainWindow::init()
 
 void MainWindow::setActions()
 {
-  // action to create new box file
+  // action to create new windows
   newAct = new QAction(tr("&New"), this);
   newAct->setIcon(QIcon(":/images/images/new.png"));
   newAct->setShortcuts(QKeySequence::New);
-  newAct->setStatusTip(tr("Create a new box file"));
+  newAct->setStatusTip(tr("Create a new empty window"));
   connect(newAct, SIGNAL(triggered()), this, SLOT(newFile()));
 
   // action to open existing box file
@@ -107,6 +107,7 @@ void MainWindow::setActions()
 
   // action exit
   exitAct = new QAction(tr("E&xit"), this);
+  exitAct->setIcon(QIcon(":/images/images/exit.png"));
   exitAct->setShortcuts(QKeySequence::Quit);
   exitAct->setStatusTip(tr("Exit the application"));
   connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
@@ -151,6 +152,7 @@ void MainWindow::setActions()
   fileToolBar->addAction(saveAsBoxAct);
   fileToolBar->addAction(openImageAct);
   fileToolBar->addAction(aboutAct);
+  fileToolBar->addAction(exitAct);  
   addToolBar(fileToolBar);
 
   connect(cowboxer, SIGNAL(currentBoxChanged(int, int)),
@@ -227,7 +229,17 @@ void MainWindow::openRecentFile()
   QAction *action = qobject_cast<QAction *>(sender());
 
   if (action)
-    loadFile(action->data().toString());
+    {
+    if (maybeSave())
+      {
+        writeSettings();
+        loadFile(action->data().toString());
+      }
+    else
+      {
+        loadFile(action->data().toString());
+      }
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -302,12 +314,14 @@ void MainWindow::about()
                        "<p>CowBoxer is available under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GNU General Public License v3</a></p>"
                        "<h2>Author(s)</h2>"
                        "<p><b>Aleksey Sytchev</b> - 194145 (at) gmail.com</p>"
-                       "<p><b>Rakeshvara Rao</b> - rakeshvar (at) gmail.com</p>"));
+                       "<p><b>Rakeshvara Rao</b> - rakeshvar (at) gmail.com</p>"
+                       "<h2>Contributor</h2>"
+                       "<p><b>Zdenko Podobny> - zdenop (at) gmail.com</p>"));
 }
 
 void MainWindow::readSettings()
 {
-  QSettings settings("Aleksey Sytchev", "CowBoxer");
+  QSettings settings("Tesseract-OCR", "CowBoxer");
   QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
   QSize size = settings.value("size", QSize(400, 400)).toSize();
 
@@ -317,7 +331,7 @@ void MainWindow::readSettings()
 
 void MainWindow::writeSettings()
 {
-  QSettings settings("Aleksey Sytchev", "CowBoxer");
+  QSettings settings("Tesseract-OCR", "CowBoxer");
 
   settings.setValue("pos", pos());
   settings.setValue("size", size());
@@ -336,6 +350,7 @@ bool MainWindow::maybeSave()
       else if (ret == QMessageBox::Cancel)
         return false;
     }
+
   return true;
 }
 
@@ -357,7 +372,6 @@ void MainWindow::loadFile(const QString &fileName)
   QString box_file = file.fileName();   // remember this path to acces to the image file
   QString image_base = box_file.replace(box_file.lastIndexOf(tr(".box")), 4, "");   // remove file extension
 
-  qDebug() << "*****____ image_base:" << image_base;
   QStringList image_files;
   image_files.append(image_base + ".tif");  // we prefare tif/tiff
   image_files.append(image_base + ".tiff");
@@ -367,7 +381,6 @@ void MainWindow::loadFile(const QString &fileName)
   image_files.append(image_base + ".jpeg");
   foreach (const QString& image_file, image_files)
     {
-      qDebug() << "*****____ testing file:" << image_file;
       if (QFile::exists(image_file))
         {
           imageFileName = image_file;
@@ -375,14 +388,12 @@ void MainWindow::loadFile(const QString &fileName)
         }
     }
 
-  qDebug() << "*****____ imageFileName:" << imageFileName;
   if (imageFileName.isEmpty())
     {
       openImage(QFileInfo(box_file).absolutePath()); // Does image file is not found yet? Get me its name, and i'll get it!
     }
   else
     {
-      qDebug() << "*****____ Opening file:" << imageFileName;
       cowboxer->setImageFile(imageFileName);   // we have got it! load and run out of function
     }
 

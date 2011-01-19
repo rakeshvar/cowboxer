@@ -57,12 +57,22 @@ win32: {
     RC_FILE = resource/win.rc
     DESTDIR = ./win32
     DIR_SEPARATOR = \
-    CONFIG   += console
+    CONFIG += static
     localize.depends = translations/*.qm
     localize.path = ./win32/translations/
     localize.files = translations/*.qm
     localize.commands = lrelease translations/*ts
     INSTALLS = localize
+}
+
+static: {
+    ######### on main.cpp use defined ########      
+    DEFINES += _COMPOSE_STATIC_
+    exists($$[QT_INSTALL_PLUGINS]/imageformats/libqtiff.$$LIB_EXTENSION) {
+            QTPLUGIN += qtiff
+            DEFINES += _USE_qtiff
+        }
+    message("Static build.")
 }
 
 unix:!macx { # installation on Unix-ish platforms

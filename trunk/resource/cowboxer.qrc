@@ -11,5 +11,6 @@
         <file>images/help.png</file>
         <file>images/hexEditor.png</file>
         <file>images/cowboxer.svg</file>
+        <file>images/exit.png</file>
     </qresource>
 </RCC>

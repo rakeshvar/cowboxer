@@ -21,20 +21,23 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QApplication>
-#include <QtCore/QtPlugin>
-#include <QtGui/QApplication>
-#include "mainwindow.h"
+//#include <QtCore/QtPlugin>
+//#include <QtGui/QApplication>
 #include <QtGui>
 
-#if defined(STATIC_LINK)
+#include "mainwindow.h"
+
+#if defined _COMPOSE_STATIC_
 #include <QtPlugin>
+#if defined _USE_qtiff
 Q_IMPORT_PLUGIN(qtiff)
+#endif
 #endif
 
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  app.setOrganizationName("Aleksey Sytchev");
+  app.setOrganizationName("Tesseract-OCR");
   app.setApplicationName("CowBoxer");
   
   //check if translation directory exists
@@ -46,9 +49,7 @@ int main(int argc, char *argv[])
   paths.append(appdir + "/../share/" + QCoreApplication::applicationName().toLower() + "/translations/");
   paths.append("/usr/share/cowboxer/translations/");
   paths.append(appdir + "/../resource/translations");
-  qDebug() << "*****____ appdir:" << appdir;
   foreach (const QString& path, paths) {
-    qDebug() << "*****____ does it exists??? " << path;
     if (QFile::exists(path)) {
       m_path = path;
       break;
@@ -59,7 +60,6 @@ int main(int argc, char *argv[])
   QString locale = QLocale::system().name();
   locale.truncate(locale.lastIndexOf('_'));
   QTranslator translator;
-  qDebug() << "*****____ locale:" << locale;
   translator.load("cowboxer_" + locale, m_path);
   app.installTranslator(&translator);
 
