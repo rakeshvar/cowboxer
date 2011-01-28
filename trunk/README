@@ -29,7 +29,7 @@ qmake
 lupdate CowBoxer.pro
 make
 make install
-CowBoxer
+cowboxer
 
 
 5. Features

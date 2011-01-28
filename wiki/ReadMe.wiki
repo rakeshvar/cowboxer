@@ -17,7 +17,9 @@ Cowboxer is a boxing software tool for tesseract OCR. It is an improvement and c
 
 {{{
 qmake CowBoxer.pro
+lupdate CowBoxer.pro
 make
+make install
 }}}
 
 

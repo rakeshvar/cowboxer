@@ -21,8 +21,6 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QApplication>
-//#include <QtCore/QtPlugin>
-//#include <QtGui/QApplication>
 #include <QtGui>
 
 #include "mainwindow.h"
@@ -37,7 +35,7 @@ Q_IMPORT_PLUGIN(qtiff)
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  app.setOrganizationName("Tesseract-OCR");
+  app.setOrganizationName("CowBoxer");
   app.setApplicationName("CowBoxer");
   
   //check if translation directory exists
