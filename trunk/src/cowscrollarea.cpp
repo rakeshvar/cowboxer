@@ -101,7 +101,14 @@ void cowScrollArea::keyPressEvent(QKeyEvent * event)
       break;
 
     case Qt::Key_Tab:
-      cowboxer->sliceCurrentBox();
+      if (event->modifiers() & Qt::ControlModifier)
+        cowboxer->sliceCurrentBoxHoriz();
+      else
+        cowboxer->sliceCurrentBoxVert();
+      break;
+
+    case Qt::Key_Home:
+      cowboxer->sliceDouble();
       break;
 
     case Qt::Key_Enter:
