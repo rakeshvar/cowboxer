@@ -1,4 +1,4 @@
-﻿/***********************************************************************
+/***********************************************************************
 ** Copyright (C) 2010, 20011 Rakesh Achanta <rakeshvar at gmail.com>
 ** Copyright (C) 2010 Aleksey Sytchev <194145 at gmail.com>
 **
@@ -293,30 +293,34 @@ void MainWindow::about()
                        "<h1>CowBoxer 1.01</h1>"
                        "The <b>CowBoxer</b> is the tool for training the \"Google Tesseract OCR\" "
                        "<h2>Controls</h2>"
-                       "<p><b>Arrow key</b> - Move box</p>"
-                       "<p><b>Arrow key + Shift</b> - Fast moving</p>"
-                       "<p><b>Arrow key + Ctrl</b> - Change box size</p>"
-                       "<p><b>Arrow key + Ctrl + Shift</b> - Fast box size changing</p>"
-                       "<p><b>Return</b> - Select next box</p>"
-                       "<p><b>Shift + Return</b> - Select previous box</p>"
-                       "<p><b>Ctrl + Shift + Del</b> - Delete current box along with the string</p>"
-                       "<p><b>Ctrl + Del</b> - Delete current box only (string transfers to next box)</p>"
-                       "<p><b>Shift + Del</b> - Delete current box's string only (next box's string transfers here)</p>"
-                       "<p><b>Del</b> - Clear current box's string</p>"
-                       "<p><b>Ctrl + Shift + Ins</b> - Insert new box & string (\"A\")</p>"
-                       "<p><b>Ctrl + Ins</b> - Insert new box only (Next box's string moves to this box)</p>"
-                       "<p><b>Shift + Ins</b> - Insert new string only (This string moves to next box)</p>"
-                       "<p><b>Tab</b> - Slice the current Box into sub boxes if possible and trim them. On loading a box file, boxes containing a \"~\" are sliced automatically.</p>"
-                       "<p><b>Backspace</b> - Backspace String</p>"
-                       "<p><b>Any key</b> - Input string for the current box</p>"
+                       "<p><b>Arrow key</b> - Move box<br>"
+                       "<b>Arrow key + Shift</b> - Fast moving<br>"
+                       "<b>Arrow key + Ctrl</b> - Change box size<br>"
+                       "<b>Arrow key + Ctrl + Shift</b> - Fast box size changing</p>"
+                       "<p><b>Return</b> - Select next box<br>"
+                       "<b>Shift + Return</b> - Select previous box</p>"
+                       "<p><b>Ctrl + Shift + Del</b> - Delete current box along with the string<br>"
+                       "<b>Ctrl + Del</b> - Delete current box only (string transfers to next box)<br>"
+                       "<b>Shift + Del</b> - Delete current box's string only (next box's moves here)<br>"
+                       "<b>Del</b> - Clear current box's string</p>"
+                       "<p><b>Ctrl + Shift + Ins</b> - Insert new box & string (\"A\")<br>"
+                       "<b>Ctrl + Ins</b> - Insert new box only (next box's string moves to this box)<br>"
+                       "<b>Shift + Ins</b> - Insert new string only (current string moves to next box)</p>"
+                       "<p><b>Tab</b> - Slice the current box vertically and trim.<br>"
+                       "<i>On loading a box file, boxes containing a \"~\" are sliced automatically.<br></i>"
+                       "<b>Ctrl + Tab</b> - Slice the current box horizontally and trim.<br>"
+                       "<b>Home</b> - Slice the current box horizontally and then vertically. <br>"
+                       "<i>On loading, if box file is empty this is done automatically.</i></p>"
+                       "<p><b>Backspace</b> - Backspace string<br>"
+                       "<b>Other keys</b> - Input string for the current box</p>"
                        "<h2>Project page</h2>"
-                       "<p><a href=\"http://code.google.com/p/cowboxer/\">CowBoxer homepage at Google Code</a></p>"
-                       "<p>CowBoxer is available under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GNU General Public License v3</a></p>"
+                       "<a href=\"http://code.google.com/p/cowboxer/\">CowBoxer homepage at Google Code</a><br>"
+                       "CowBoxer is available under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GNU General Public License v3</a><br>"
                        "<h2>Author(s)</h2>"
-                       "<p><b>Aleksey Sytchev</b> - 194145 (at) gmail.com</p>"
-                       "<p><b>Rakeshvara Rao</b> - rakeshvar (at) gmail.com</p>"
+                       "<b>Aleksey Sytchev</b> - 194145 (at) gmail.com<br>"
+                       "<b>Rakeshvara Rao</b> - rakeshvar (at) gmail.com<br>"
                        "<h2>Contributor</h2>"
-                       "<p><b>Zdenko Podobny> - zdenop (at) gmail.com</p>"));
+                       "<b>Zdenko Podobny> - zdenop (at) gmail.com<br>"));
 }
 
 void MainWindow::readSettings()

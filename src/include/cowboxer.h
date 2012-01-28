@@ -49,7 +49,9 @@ void decreaseHeight(bool fast = false);
 void increaseWidth(bool fast = false);
 void decreaseWidth(bool fast = false);
 
-void sliceCurrentBox();
+void sliceCurrentBoxVert();
+void sliceCurrentBoxHoriz();
+void sliceDouble();
 void removeCurrentBox();
 void removeStrOnly();
 void removeBoxOnly();
@@ -65,8 +67,8 @@ void mousePressEvent(QMouseEvent *event);
 
 bool isHWhite(int x1, int x2, int y);
 bool isVWhite(int x, int y1, int y2);
-void trimAndAddBox(int x, int y, int w, int h, QString str);
-
+void trimTopBottomAndAddBox(int x, int y, int w, int h, QString str);
+void trimSidesAndAddBox(int x, int y, int w, int h, QString str);
 
 private:
 QPixmap pixmap;
